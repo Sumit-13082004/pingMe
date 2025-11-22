@@ -9,7 +9,7 @@ export const generateJwtToken = (payload, res) => {
     });
 
     res.cookie("jwt", token, {
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: 5 * 24 * 60 * 60 * 1000,
         // httpOnly: true ensures the cookie is only accessible by the web server, not JavaScript, which helps mitigate XSS attacks.
         httpOnly: true,
         // sameSite: "strict" restricts the browser from sending this cookie along with cross-site requests, reducing CSRF attack risk.
