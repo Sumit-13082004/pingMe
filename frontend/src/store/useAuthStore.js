@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { axiosInstance } from '../lib/axios.js';
 import toast from 'react-hot-toast';
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
-export const useAuthStore = create((set) => ({
+export const useAuthStore = create((set, get) => ({
     authUser: null,
     isCheckingAuth: true,
     authError: null,
@@ -19,6 +19,7 @@ export const useAuthStore = create((set) => ({
         try {
             const response = await axiosInstance.get('/auth/check-auth', { withCredentials: true });
             set((state) => ({ authUser: response.data }));
+            get().connectSocket();
         } catch (error) {
             console.error("Auth check failsed: ", error.message);
             set((state) => ({ authUser: null, authError: error }));
@@ -32,6 +33,7 @@ export const useAuthStore = create((set) => ({
         try {
             const response = await axiosInstance.post('/auth/signup', data);
             set((state) => ({ authUser: response.data }));
+            get().connectSocket();
             toast.success("Account created successfully");
         } catch (error) {
             console.error("signup failed: ", error.message);
@@ -47,6 +49,7 @@ export const useAuthStore = create((set) => ({
         try {
             const response = await axiosInstance.post('/auth/login', data);
             set((state) => ({ authUser: response.data }));
+            get().connectSocket()
             toast.success("Logged in Successfully");
         } catch (error) {
             console.error("login failed: ", error.message);
@@ -62,6 +65,7 @@ export const useAuthStore = create((set) => ({
         try {
             await axiosInstance.post('/auth/logout');
             set((state) => ({ authUser: null }));
+            get().disconnectSocket()
             toast.success("Logged out successfully");
         } catch (error) {
             toast.error(error.response.data.error);
@@ -89,7 +93,7 @@ export const useAuthStore = create((set) => ({
         const socket = io(BASE_URL, {
             query: {
                 userId: currentUser._id,
-            }
+            },
         });
         socket.connect();
 
