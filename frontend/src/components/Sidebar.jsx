@@ -11,7 +11,7 @@ const Sidebar = () => {
 
     useEffect(() => {
         getUsers();
-    }, [getUsers]);
+    }, [getUsers, onlineUsers]);
 
     if (isUsersLoading) {
         return (

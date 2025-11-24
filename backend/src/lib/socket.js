@@ -2,6 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import http from "http";
 
+// Setting up the socke.io personal server
 const app = express();
 const server = http.createServer(app);
 
