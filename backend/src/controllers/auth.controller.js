@@ -43,13 +43,13 @@ export const signup = async (req, res) => {
             await newUser.save();
 
             res.status(201).json({
-                message: "user created successfully", 
-                user: {
-                    id: newUser._id,
-                    fullName: newUser.fullName,
-                    email: newUser.email,
-                    profilePic: newUser.profilePic
-                }
+                message: "user created successfully",
+
+                id: newUser._id,
+                fullName: newUser.fullName,
+                email: newUser.email,
+                profilePic: newUser.profilePic
+
             });
         } else {
             res.status(400).json({ message: "Invalid user data" });
@@ -85,11 +85,14 @@ export const login = async (req, res) => {
 
         generateJwtToken(payload, res);
 
-        res.status(200).json({ message: "Logged in successfully" }, {
+        res.status(200).json({
+            message: "Logged in successfully",
+
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
             profilePic: user.profilePic,
+
         });
     } catch (error) {
         console.error("Error in login controller", error.message);
