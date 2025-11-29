@@ -2,6 +2,7 @@
 
 This is my awesome project description.  
 It explains what the project does, how to set it up, and why it’s useful.
+You could chat to your friend one and one
 
 ---
 
